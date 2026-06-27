@@ -1,6 +1,7 @@
 # Neovim Configuration
 
 A modern Neovim setup with LSP support, fuzzy finding, file tree navigation, and syntax highlighting.
+**Requirements:** nvim version >= 0.11
 
 ## 📦 Plugin Manager
 
