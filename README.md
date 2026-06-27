@@ -1,88 +1,133 @@
 # Neovim Configuration
 
-A modern Neovim setup with LSP support, fuzzy finding, file tree navigation, and syntax highlighting.
-**Requirements:** nvim version >= 0.11
+A modern Neovim setup with LSP, autocompletion, fuzzy finding, file tree, formatting, git integration, a buffer bar, and a Snacks dashboard.
 
-## 📦 Plugin Manager
+**Requirements:** nvim >= 0.11
 
-- **[lazy.nvim](https://github.com/folke/lazy.nvim)** - Modern plugin manager with lazy loading
+## Keymaps
 
-## 🎨 Theme & UI
+Leader key is `Space`.
 
-- **[catppuccin](https://github.com/catppuccin/nvim)** - Soothing pastel theme
-  - **Available flavours:** `mocha` (default), `macchiato`, `frappe`, `latte`
-  - Change flavour in `lua/plugins/catppuccin.lua`
-- **[lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)** - Blazing fast statusline (dracula theme)
-- **[alpha-nvim](https://github.com/goolord/alpha-nvim)** - Fast and customizable dashboard
-- **[nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons)** - File icons
-- **[indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)** - Visual indent guides
+### General (`lua/vim-options.lua`)
 
-## 🔍 Navigation & Search
+| Key | Action |
+|-----|--------|
+| `<leader>?` | Open cheatsheet float (`SHPARGALKA.md`) |
+| `<leader>nf` | New file (prompt path, create dirs, open) |
+| `<leader>nd` | New folder (prompt path, `mkdir -p`) |
 
-- **[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)** - Fuzzy finder for files and text
-  - `<C-p>` - Find files
-  - `<leader>fg` - Live grep (search text)
-- **[telescope-ui-select](https://github.com/nvim-telescope/telescope-ui-select.nvim)** - Enhanced UI select with Telescope
-- **[neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim)** - File explorer
-  - `<C-n>` - Toggle file tree
-- **[which-key.nvim](https://github.com/folke/which-key.nvim)** - Keybinding hints
-  - Press `<Space>` and wait to see available keybindings
+### Navigation & Search
 
-## 💻 LSP & Language Support
+| Key | Action | Plugin |
+|-----|--------|--------|
+| `<C-p>` | Find files | telescope |
+| `<leader>fg` | Live grep (search text) | telescope |
+| `<C-n>` | Reveal file tree (left) | neo-tree |
+| `<Space>` (wait) | Show keybinding hints | which-key |
 
-- **[mason.nvim](https://github.com/williamboman/mason.nvim)** - LSP/DAP/linter installer
-- **[mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim)** - Mason integration for LSP
-- **[nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)** - LSP configuration
-  - **Installed Language Servers:**
-    - `lua_ls` - Lua
-    - `pyright` - Python
-  - **Keybindings:**
-    - `K` - Hover documentation
-    - `gd` - Go to definition
-    - `<leader>ca` - Code actions
+### Buffers (`lua/plugins/bufferline.lua`)
 
-## 🌳 Syntax Highlighting
+| Key | Action |
+|-----|--------|
+| `<Tab>` | Next buffer |
+| `<S-Tab>` | Previous buffer |
+| `<leader>bp` | Pick buffer by label |
+| `<leader>bd` | Close current buffer |
 
-- **[nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)** - Advanced syntax highlighting and code parsing
-  - **Languages:** Lua, JavaScript
+### LSP (`lua/plugins/lsp-config.lua`)
 
-## ⚡ Productivity
+| Key | Action |
+|-----|--------|
+| `K` | Hover documentation |
+| `gd` | Go to definition |
+| `gr` | Find references |
+| `<leader>rn` | Rename symbol |
+| `<leader>ca` | Code action (n + v) |
 
-- **[Comment.nvim](https://github.com/numToStr/Comment.nvim)** - Easy code commenting
-  - `gcc` - Toggle comment on line
-  - `gc` (visual mode) - Toggle comment on selection
-- **[nvim-autopairs](https://github.com/windwp/nvim-autopairs)** - Auto-close brackets and quotes
-- **[gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)** - Git integration with signs and hunks
-  - `]c` / `[c` - Navigate git changes
+### Formatting (`lua/plugins/conform.lua`)
 
-## ⚙️ Settings
+| Key | Action |
+|-----|--------|
+| `<leader>f` | Format file/selection (n + v) |
 
-- **Leader key:** `Space`
-- **Indentation:** 2 spaces
-- **Tab expansion:** Enabled
-- **Line numbers:** Enabled
-- **Clipboard:** Synced with system clipboard
-- **Search:** Smart case-insensitive search
-- **Confirm on quit:** Ask to save unsaved changes
-- **Diagnostics:** Inline messages with signs and underlines
+Format also runs on save (500ms timeout, LSP fallback).
 
-## 📋 Dependencies
+### Editing & Tools
 
-- **[plenary.nvim](https://github.com/nvim-lua/plenary.nvim)** - Lua utility functions
-- **[nui.nvim](https://github.com/MunifTanjim/nui.nvim)** - UI component library
+| Key | Action | Plugin |
+|-----|--------|--------|
+| `gcc` | Toggle comment line | Comment.nvim |
+| `gc` (visual) | Toggle comment selection | Comment.nvim |
+| `<leader>m` | Toggle markdown render/raw | render-markdown |
+| `<leader>tt` | Toggle terminal | toggleterm |
+| `<Esc>` (terminal) | Terminal → normal mode | toggleterm |
 
-## 🚀 Installation
+### Completion — blink.cmp (`super-tab` preset)
 
-1. Clone this repository to your Neovim config directory:
-   ```bash
-   git clone https://github.com/MyroslavRepin/nvim-setup.git ~/.config/nvim
-   ```
+| Key | Action |
+|-----|--------|
+| `<Tab>` | Accept / snippet jump |
+| `<S-Tab>` | Jump back |
+| `<C-y>` | Accept |
+| `<C-e>` | Cancel |
+| `<C-Space>` | Open menu |
+| `<C-n>` / `<C-p>` | Navigate items |
 
-2. Start Neovim - plugins will install automatically:
-   ```bash
-   nvim
-   ```
+## Plugins
 
-3. LSP servers will be installed via Mason on first launch.
+**Manager:** [lazy.nvim](https://github.com/folke/lazy.nvim)
 
+**Theme & UI**
+- [catppuccin](https://github.com/catppuccin/nvim) — theme (`mocha` default; `macchiato`/`frappe`/`latte` in `lua/plugins/catppuccin.lua`)
+- [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) — statusline
+- [snacks.nvim](https://github.com/folke/snacks.nvim) — dashboard (recent files, projects, git status)
+- [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) — indent guides
+- nvim-web-devicons — file icons
 
+**Navigation & Search**
+- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) + telescope-ui-select
+- [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) — file explorer
+- [bufferline.nvim](https://github.com/akinsho/bufferline.nvim) — buffer bar at top (LSP diagnostics, thin separators)
+- [which-key.nvim](https://github.com/folke/which-key.nvim) — keybinding hints
+
+**LSP, Completion & Formatting**
+- [mason.nvim](https://github.com/williamboman/mason.nvim) + mason-lspconfig — installs `lua_ls`, `pyright`, `ruff`
+- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) — LSP setup
+- [blink.cmp](https://github.com/saghen/blink.cmp) — completion engine
+- [conform.nvim](https://github.com/stevearc/conform.nvim) — format on save (Python: `ruff`; Lua: `stylua`)
+
+**Syntax & Markdown**
+- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+- [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim) — inline markdown render
+- [glow.nvim](https://github.com/ellisonleao/glow.nvim) — markdown preview (`:Glow`)
+
+**Productivity & Git**
+- [Comment.nvim](https://github.com/numToStr/Comment.nvim)
+- [nvim-autopairs](https://github.com/windwp/nvim-autopairs)
+- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) — git signs in gutter
+- [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) — floating/split terminal
+- [vim-wakatime](https://github.com/wakatime/vim-wakatime) — time tracking
+
+**Dependencies:** plenary.nvim, nui.nvim
+
+## Settings
+
+- Leader: `Space`
+- Indentation: 2 spaces, expandtab
+- Line numbers, persistent undo, `scrolloff=8`, always-on signcolumn
+- System clipboard sync (`unnamedplus`)
+- Smart case-insensitive search
+- Confirm on quit, inline diagnostics (virtual text + signs + underline)
+
+## Installation
+
+```bash
+git clone https://github.com/MyroslavRepin/nvim-setup.git ~/.config/nvim
+nvim
+```
+
+Plugins install on first launch; Mason installs LSP servers automatically.
+
+## Useful commands
+
+`:Lazy` (plugins) · `:Mason` (LSP servers) · `:ConformInfo` (formatters) · `:Glow` (markdown preview) · `:checkhealth`
