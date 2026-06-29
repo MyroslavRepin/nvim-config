@@ -28,12 +28,20 @@ vim.o.confirm = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
+-- Folding by indent (collapse python funcs/blocks). Start fully open.
+-- foldmethod/foldlevel are window-local, so apply per-window via autocmd.
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+  callback = function()
+    vim.wo.foldmethod = "indent"
+    vim.wo.foldlevel = 99
+  end,
+})
+vim.o.foldlevelstart = 99
+
 -- Inline messages config
 vim.diagnostic.config({
-  virtual_text = {
-    prefix = "●",
-    spacing = 2,
-  },
+  -- virtual_text disabled: tiny-inline-diagnostic.nvim renders inline diagnostics
+  virtual_text = false,
   signs = true,
   underline = true,
   update_in_insert = true,
@@ -68,6 +76,32 @@ _G.open_cheatsheet = function()
 end
 
 vim.keymap.set("n", "<leader>?", _G.open_cheatsheet, { desc = "Cheatsheet" })
+
+-- Copy whole buffer to system clipboard
+vim.keymap.set("n", "<leader>y", '<cmd>%y+<CR>', { desc = "Copy whole buffer to clipboard" })
+
+-- Window / split management
+vim.keymap.set("n", "<leader>|", "<cmd>vsplit<CR>", { desc = "Vertical split" })
+vim.keymap.set("n", "<leader>-", "<cmd>split<CR>", { desc = "Horizontal split" })
+vim.keymap.set("n", "<leader>wd", "<cmd>close<CR>", { desc = "Close window" })
+
+-- Move between windows
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Window left" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Window down" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Window up" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Window right" })
+
+-- Resize with Ctrl+arrows (may not pass through in some terminals)
+vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<CR>", { desc = "Resize up" })
+vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<CR>", { desc = "Resize down" })
+vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { desc = "Resize left" })
+vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Resize right" })
+
+-- Resize fallback (always works, terminal-independent): leader + arrows
+vim.keymap.set("n", "<leader><Up>", "<cmd>resize +2<CR>", { desc = "Resize up" })
+vim.keymap.set("n", "<leader><Down>", "<cmd>resize -2<CR>", { desc = "Resize down" })
+vim.keymap.set("n", "<leader><Left>", "<cmd>vertical resize -2<CR>", { desc = "Resize left" })
+vim.keymap.set("n", "<leader><Right>", "<cmd>vertical resize +2<CR>", { desc = "Resize right" })
 
 -- New file: prompt relative path, create dirs, open it
 vim.keymap.set("n", "<leader>nf", function()
